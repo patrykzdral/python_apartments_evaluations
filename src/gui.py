@@ -9,6 +9,7 @@
 import googlemaps
 from PyQt5 import QtCore, QtGui, QtWidgets
 from PyQt5.QtCore import pyqtSlot
+import resources.resource_rc
 
 from src import Valuation
 
@@ -25,9 +26,12 @@ class App(QtWidgets.QWidget):
             key='AIzaSyAWPy2RuBxzziKOgEDLXa2LrXakMIHlBpY')
         self.valuation = Valuation.Valuation()
 
-    def setupUi(self, MainWindow):
-        MainWindow.setObjectName("Główne okno")
+    def setup_ui(self, MainWindow):
+        #QWidget.setStyleSheet(self, "../css/style.css")
+        # Optional, resize window to image size
         MainWindow.resize(800, 600)
+        MainWindow.setObjectName("Główne okno")
+
         self.centralwidget = QtWidgets.QWidget(MainWindow)
         self.centralwidget.setObjectName("centralwidget")
         self.label = QtWidgets.QLabel(self.centralwidget)
@@ -79,7 +83,7 @@ class App(QtWidgets.QWidget):
         self.pushButton_calculate_geographical. \
             setObjectName("pushButton_calculate_geographical")
         self.pushButton_calculate_geographical. \
-            clicked.connect(self.buttonCalculateGeographical_onClick)
+            clicked.connect(self.button_calculate_geographical_on_click)
         self.label_5 = QtWidgets.QLabel(self.centralwidget)
         self.label_5.setGeometry(QtCore.QRect(100, 100, 221, 17))
         font = QtGui.QFont()
@@ -204,7 +208,7 @@ class App(QtWidgets.QWidget):
         self.pushButton_calculatePrice.setObjectName(
             "pushButton_calculatePrice")
         self.pushButton_calculatePrice.clicked.connect(
-            self.buttonCalculatePrice_onClick)
+            self.button_calculate_price_on_click)
         self.pushButton_calculatePrice.setDisabled(True)
         MainWindow.setCentralWidget(self.centralwidget)
         self.menubar = QtWidgets.QMenuBar(MainWindow)
@@ -215,10 +219,10 @@ class App(QtWidgets.QWidget):
         self.statusbar.setObjectName("statusbar")
         MainWindow.setStatusBar(self.statusbar)
 
-        self.retranslateUi(MainWindow)
+        self.retranslate_ui(MainWindow)
         QtCore.QMetaObject.connectSlotsByName(MainWindow)
 
-    def retranslateUi(self, MainWindow):
+    def retranslate_ui(self, MainWindow):
         _translate = QtCore.QCoreApplication.translate
         MainWindow.setWindowTitle(_translate("MainWindow", "MainWindow"))
         self.label.setText(_translate("MainWindow", "Wycena nieruchomości"))
@@ -269,7 +273,7 @@ class App(QtWidgets.QWidget):
             QtWidgets.QMessageBox.about(self, "Błąd", "Nie znaleziono adresu")
 
     @pyqtSlot()
-    def buttonCalculateGeographical_onClick(self):
+    def button_calculate_geographical_on_click(self):
         try:
             geocode_result = self.gmaps.geocode(
                 'Poland ' + self.lineEdit_postalCode.text() +
@@ -278,10 +282,10 @@ class App(QtWidgets.QWidget):
             self.longitude = geocode_result['geometry']['location']['lng']
             self.find_city(geocode_result)
         except ...:
-            QtWidgets.QMessageBox.about("Błąd", "Nie znaleziono adresu")
+            QtWidgets.QMessageBox.about(self,"Błąd", "Nie znaleziono adresu")
 
     @pyqtSlot()
-    def buttonCalculatePrice_onClick(self):
+    def button_calculate_price_on_click(self):
         try:
             price = self.valuation.estimate_cost_of_the_flat(
                 self.latitude, self.longitude,
@@ -296,11 +300,13 @@ class App(QtWidgets.QWidget):
                 ),
                 self.checkBox_balcony.isChecked(
                 ),
-                self.checkBox_usableRoom, self.checkBox_garage.isChecked(
+                self.checkBox_usableRoom.isChecked(
+                ),
+                self.checkBox_garage.isChecked(
                 ),
                 self.checkBox_cellar.isChecked(
                 ),
-                self.checkBox_garage.isChecked(
+                self.checkBox_garden.isChecked(
                 ),
                 self.checkBox_patio.isChecked(
                 ),
@@ -315,7 +321,7 @@ class App(QtWidgets.QWidget):
             )
             self.label_14.setText(str(price))
         except ValueError:
-            QtWidgets.QMessageBox.about("Błąd", "Wprowadzono niepoprawne dane")
+            QtWidgets.QMessageBox.about(self, "Błąd", "Wprowadzono niepoprawne dane")
 
 
 if __name__ == "__main__":
@@ -323,7 +329,8 @@ if __name__ == "__main__":
 
     app = QtWidgets.QApplication(sys.argv)
     MainWindow = QtWidgets.QMainWindow()
+
     ui = App()
-    ui.setupUi(MainWindow)
+    ui.setup_ui(MainWindow)
     MainWindow.show()
     sys.exit(app.exec_())

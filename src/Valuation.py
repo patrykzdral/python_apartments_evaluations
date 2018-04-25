@@ -23,6 +23,7 @@ class Valuation:
         53.4289400, 14.5530200)
 
     def __init__(self):
+
         self.list_Of_additional_amenities = [
             "basen", "siłownia", "pralnia", "piwnica"]
         self.list_Of_available_cities = [
@@ -62,7 +63,7 @@ class Valuation:
             city, square_meters, market, latitude, longitude)
         cost = float(cost)
         if garage:
-            cost += cost + 15000
+            cost += 15000
         if furnished:
             cost *= 1.15
         if balcony:
@@ -140,39 +141,39 @@ class Valuation:
             switcher = {
                 "wrocław": Valuation.get_info(
                     self, square_meters,
-                    7032, 6217, 6118, latitude,
+                    7442, 6639, 6177, latitude,
                     longitude, self.CENTER_OF_WROCLAW),
                 "warszawa": Valuation.get_info(
                     self, square_meters,
-                    7841, 7660, 7895, latitude,
+                    9865, 8969, 9010, latitude,
                     longitude, self.CENTER_OF_WARSAW),
                 "kraków": Valuation.get_info(
                     self, square_meters,
-                    7990, 7085, 7482, latitude,
+                    9040, 7623, 7508, latitude,
                     longitude, self.CENTER_OF_CRACOW),
                 "gdańsk": Valuation.get_info(
                     self, square_meters,
-                    8667, 5998, 6773, latitude,
+                    8700, 8632, 7572, latitude,
                     longitude, self.CENTER_OF_CRACOW),
                 "katowice": Valuation.get_info(
                     self, square_meters,
-                    5472, 5364, 5425, latitude,
+                    5051, 4525, 4652, latitude,
                     longitude, self.CENTER_OF_KATOWICE),
                 "lublin": Valuation.get_info(
                     self, square_meters,
-                    5824, 5486, 5235, latitude,
+                    5855, 5211, 5110, latitude,
                     longitude, self.CENTER_OF_LUBLIN),
                 "łódź": Valuation.get_info(
                     self, square_meters,
-                    5567, 5200, 4891, latitude,
+                    3997, 4304, 4480, latitude,
                     longitude, self.CENTER_OF_LODZ),
                 "poznań": Valuation.get_info(
                     self, square_meters,
-                    7217, 6377, 6290, latitude,
+                    6999, 6433, 5948, latitude,
                     longitude, self.CENTER_OF_POZNAN),
                 "szczecin": Valuation.get_info(
                     self, square_meters,
-                    5254, 5095, 5120, latitude,
+                    5502, 4909, 4711, latitude,
                     longitude, self.CENTER_OF_SZCZECIN)
             }
         return switcher.get(city, "nothing")
