@@ -26,7 +26,8 @@ class Valuation:
         self.list_Of_additional_amenities = [
             "basen", "siłownia", "pralnia", "piwnica"]
         self.list_Of_available_cities = [
-            "Wrocław", "Warszawa", "Kraków", "Gdańsk", "Katowice", "Lublin", "Łódź",
+            "Wrocław", "Warszawa", "Kraków",
+            "Gdańsk", "Katowice", "Lublin", "Łódź",
             "Poznań", "Szczecin"]
 
     def get_cost(self, square_meters, sq1, sq2, sq3, distance):
@@ -50,7 +51,8 @@ class Valuation:
         return cost
 
     def estimate_cost_of_the_flat(self, latitude, longitude,
-                                  square_meters, city, construction_year, furnished,
+                                  square_meters, city,
+                                  construction_year, furnished,
                                   balcony, usable_room, garage, cellar,
                                   garden, patio, elevator, two_floors,
                                   air_conditioning, market):
@@ -81,15 +83,15 @@ class Valuation:
             cost += 5000
 
         if construction_year < 2000:
-            cost *= cost * 0.9
+            cost *= 0.9
         elif construction_year < 2005:
             cost *= 0.95
         elif 2010 < construction_year < 2015:
-            cost *= cost * 1.05
+            cost *= 1.05
         else:
             cost *= 1.1
 
-        return cost
+        return "{0:.2f}".format(round(cost, 2))
 
     def numbers_to_strings(self, city, square_meters,
                            market, latitude, longitude):
@@ -97,74 +99,87 @@ class Valuation:
         city = city.lower()
         if market == "pierwotny":
             switcher = {
-                "wrocław": Valuation.get_info(self, city, square_meters, 7032, 6217, 6118, latitude, longitude,
-                                              self.CENTER_OF_WROCLAW),
-                "warszawa": Valuation.get_info(self, city, square_meters, 7841, 7660, 7895, latitude, longitude,
-                                               self.CENTER_OF_WARSAW),
-                "kraków": Valuation.get_info(self, city, square_meters, 7990, 7085, 7482, latitude, longitude,
-                                             self.CENTER_OF_CRACOW),
-                "gdańsk": Valuation.get_info(self, city, square_meters, 8667, 5998, 6773, latitude, longitude,
-                                             self.CENTER_OF_CRACOW),
-                "katowice": Valuation.get_info(self, city, square_meters, 5472, 5364, 5425, latitude, longitude,
-                                               self.CENTER_OF_KATOWICE),
-                "lublin": Valuation.get_info(self, city, square_meters, 5824, 5486, 5235, latitude,
-                                             longitude, self.CENTER_OF_LUBLIN),
-                "łódź": Valuation.get_info(self, city, square_meters, 5567, 5200, 4891, latitude, longitude,
-                                           self.CENTER_OF_LODZ),
-                "poznań": Valuation.get_info(self, city, square_meters, 7217, 6377, 6290, latitude,
-                                             longitude, self.CENTER_OF_POZNAN),
-                "szczecin": Valuation.get_info(self, city, square_meters, 5254, 5095, 5120, latitude,
-                                               longitude, self.CENTER_OF_SZCZECIN)
+                "wrocław": Valuation.get_info(
+                    self, square_meters,
+                    7032, 6217, 6118, latitude,
+                    longitude, self.CENTER_OF_WROCLAW),
+                "warszawa": Valuation.get_info(
+                    self, square_meters,
+                    7841, 7660, 7895, latitude,
+                    longitude, self.CENTER_OF_WARSAW),
+                "kraków": Valuation.get_info(
+                    self, square_meters,
+                    7990, 7085, 7482, latitude,
+                    longitude, self.CENTER_OF_CRACOW),
+                "gdańsk": Valuation.get_info(
+                    self, square_meters,
+                    8667, 5998, 6773, latitude,
+                    longitude, self.CENTER_OF_CRACOW),
+                "katowice": Valuation.get_info(
+                    self, square_meters,
+                    5472, 5364, 5425, latitude,
+                    longitude, self.CENTER_OF_KATOWICE),
+                "lublin": Valuation.get_info(
+                    self, square_meters,
+                    5824, 5486, 5235, latitude,
+                    longitude, self.CENTER_OF_LUBLIN),
+                "łódź": Valuation.get_info(
+                    self, square_meters,
+                    5567, 5200, 4891, latitude,
+                    longitude, self.CENTER_OF_LODZ),
+                "poznań": Valuation.get_info(
+                    self, square_meters,
+                    7217, 6377, 6290, latitude, longitude,
+                    self.CENTER_OF_POZNAN),
+                "szczecin": Valuation.get_info(
+                    self, square_meters,
+                    5254, 5095, 5120, latitude, longitude,
+                    self.CENTER_OF_SZCZECIN)
             }
         else:
             switcher = {
                 "wrocław": Valuation.get_info(
-                    self, city, square_meters,
+                    self, square_meters,
                     7032, 6217, 6118, latitude,
                     longitude, self.CENTER_OF_WROCLAW),
                 "warszawa": Valuation.get_info(
-                    self, city, square_meters,
+                    self, square_meters,
                     7841, 7660, 7895, latitude,
                     longitude, self.CENTER_OF_WARSAW),
                 "kraków": Valuation.get_info(
-                    self, city, square_meters,
+                    self, square_meters,
                     7990, 7085, 7482, latitude,
                     longitude, self.CENTER_OF_CRACOW),
                 "gdańsk": Valuation.get_info(
-                    self, city, square_meters,
+                    self, square_meters,
                     8667, 5998, 6773, latitude,
                     longitude, self.CENTER_OF_CRACOW),
                 "katowice": Valuation.get_info(
-                    self, city, square_meters,
+                    self, square_meters,
                     5472, 5364, 5425, latitude,
                     longitude, self.CENTER_OF_KATOWICE),
                 "lublin": Valuation.get_info(
-                    self, city, square_meters,
+                    self, square_meters,
                     5824, 5486, 5235, latitude,
                     longitude, self.CENTER_OF_LUBLIN),
                 "łódź": Valuation.get_info(
-                    self, city, square_meters, 5567, 5200, 4891, latitude,
+                    self, square_meters,
+                    5567, 5200, 4891, latitude,
                     longitude, self.CENTER_OF_LODZ),
                 "poznań": Valuation.get_info(
-                    self, city, square_meters, 7217, 6377, 6290, latitude,
+                    self, square_meters,
+                    7217, 6377, 6290, latitude,
                     longitude, self.CENTER_OF_POZNAN),
                 "szczecin": Valuation.get_info(
-                    self, city, square_meters, 5254, 5095, 5120, latitude,
+                    self, square_meters,
+                    5254, 5095, 5120, latitude,
                     longitude, self.CENTER_OF_SZCZECIN)
             }
         return switcher.get(city, "nothing")
 
-    def get_info(self, city, square_meters, sq1, sq2,
+    def get_info(self, square_meters, sq1, sq2,
                  sq3, latitude, longitude, lat_lon_city):
-        print(city)
-        print(square_meters)
-        print(sq1)
-        print(sq2)
-        print(sq3)
-        print(latitude)
-        print(lat_lon_city)
-
-        distance = GeographicalLocation.GeographicalLocation \
-            (latitude, longitude).distance_to(lat_lon_city)
+        distance = GeographicalLocation.GeographicalLocation(
+            latitude, longitude).distance_to(lat_lon_city)
         cost = self.get_cost(square_meters, sq1, sq2, sq3, distance)
         return cost

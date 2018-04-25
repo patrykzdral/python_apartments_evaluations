@@ -254,60 +254,68 @@ class App(QtWidgets.QWidget):
             _translate("MainWindow", "oblicz cenę mieszkania"))
 
     def find_city(self, geocode_result):
-        addressType = None
-        print(geocode_result['address_components'][0])
+        found = False
         for i in range(0, len(geocode_result['address_components'])):
             for x in geocode_result['address_components'][i]:
-                if (x == "long_name"):
+                if x == "long_name":
                     locality = geocode_result[
                         'address_components'][i]['long_name']
-                    if self.valuation.list_Of_available_cities.__contains__(locality):
+                    if self.valuation. \
+                            list_Of_available_cities.__contains__(locality):
+                        found = True
                         self.lineEdit_city.setText(locality)
                         self.pushButton_calculatePrice.setDisabled(False)
+        if not found:
+            QtWidgets.QMessageBox.about(self, "Błąd", "Nie znaleziono adresu")
 
     @pyqtSlot()
     def buttonCalculateGeographical_onClick(self):
-        print(self.lineEdit_postalCode.text())
-
-        geocode_result = self.gmaps.geocode(
-            'Poland ' + self.lineEdit_postalCode.text())[0]
-        self.latitude = geocode_result['geometry']['location']['lat']
-        self.longitude = geocode_result['geometry']['location']['lng']
-        self.find_city(geocode_result)
+        try:
+            geocode_result = self.gmaps.geocode(
+                'Poland ' + self.lineEdit_postalCode.text() +
+                self.lineEdit_city.text() + self.lineEdit_street.text())[0]
+            self.latitude = geocode_result['geometry']['location']['lat']
+            self.longitude = geocode_result['geometry']['location']['lng']
+            self.find_city(geocode_result)
+        except ...:
+            QtWidgets.QMessageBox.about("Błąd", "Nie znaleziono adresu")
 
     @pyqtSlot()
     def buttonCalculatePrice_onClick(self):
-        price = self.valuation.estimate_cost_of_the_flat(
-            self.latitude, self.longitude,
-            float(
-                self.lineEdit_squareMeters.text(
+        try:
+            price = self.valuation.estimate_cost_of_the_flat(
+                self.latitude, self.longitude,
+                float(
+                    self.lineEdit_squareMeters.text(
+                    )),
+                self.lineEdit_city.text(
+                ),
+                int(self.lineEdit_productionYear.text(
                 )),
-            self.lineEdit_city.text(
-            ),
-            int(self.lineEdit_productionYear.text(
-            )),
-            self.checkBox_furnished.isChecked(
-            ),
-            self.checkBox_balcony.isChecked(
-            ),
-            self.checkBox_usableRoom, self.checkBox_garage.isChecked(
-            ),
-            self.checkBox_cellar.isChecked(
-            ),
-            self.checkBox_garage.isChecked(
-            ),
-            self.checkBox_patio.isChecked(
-            ),
-            self.checkBox_elevator.isChecked(
-            ),
-            self.checkBox_twoFloors.isChecked(
-            ),
-            self.checkBox_airConditioning.isChecked(
-            ),
-            self.comboBox_market.currentText(
+                self.checkBox_furnished.isChecked(
+                ),
+                self.checkBox_balcony.isChecked(
+                ),
+                self.checkBox_usableRoom, self.checkBox_garage.isChecked(
+                ),
+                self.checkBox_cellar.isChecked(
+                ),
+                self.checkBox_garage.isChecked(
+                ),
+                self.checkBox_patio.isChecked(
+                ),
+                self.checkBox_elevator.isChecked(
+                ),
+                self.checkBox_twoFloors.isChecked(
+                ),
+                self.checkBox_airConditioning.isChecked(
+                ),
+                self.comboBox_market.currentText(
+                )
             )
-        )
-        self.label_14.setText(str(price))
+            self.label_14.setText(str(price))
+        except ValueError:
+            QtWidgets.QMessageBox.about("Błąd", "Wprowadzono niepoprawne dane")
 
 
 if __name__ == "__main__":
